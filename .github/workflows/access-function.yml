@@ -35,7 +35,7 @@ jobs:
           azcliversion: 2.41.0
           inlineScript: |
             token=$(az account get-access-token --resource api://337c1756-0f2a-436f-a0f8-35422213dd34 | jq -r '.accessToken')
-            echo $token
+            echo 'hello' $token
             curl -X POST --header "Authorization: $token" 'https://maelzaye-func.azurewebsites.net/'
 
      
