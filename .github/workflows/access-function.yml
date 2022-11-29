@@ -1,0 +1,41 @@
+name: Trigger auto deployment for AKS
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+  # Allow manually trigger 
+  workflow_dispatch:      
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v3
+      
+      
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.DEPLOY_IDENTITY_CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+  
+      - name: Get Access Token
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.41.0
+          inlineScript: |
+            apt-get install jq
+            token=`az account get-access-token --resource api://337c1756-0f2a-436f-a0f8-35422213dd34`
+            curl -X POST --header "Authorization: $token 'https://maelzaye-func.azurewebsites.net/'
+
+     
