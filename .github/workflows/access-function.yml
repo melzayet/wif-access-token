@@ -30,14 +30,12 @@ jobs:
           subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
   
       - name: Get Access Token
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.41.0
-          inlineScript: |
-            sudo apt-get update
-            sudo apt-get install -y jq
-            token=$(az account get-access-token --resource api://337c1756-0f2a-436f-a0f8-35422213dd34 | jq -r '.accessToken')
-            echo $token
-            curl -X POST --header "Authorization: $token 'https://maelzaye-func.azurewebsites.net/'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          token=$(az account get-access-token --resource api://337c1756-0f2a-436f-a0f8-35422213dd34 | jq -r '.accessToken')
+          echo $token
+          curl -X POST --header "Authorization: $token 'https://maelzaye-func.azurewebsites.net/'
 
      
