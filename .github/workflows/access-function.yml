@@ -34,8 +34,8 @@ jobs:
         with:
           azcliversion: 2.41.0
           inlineScript: |
-            apt-get install jq
             token=`az account get-access-token --resource api://337c1756-0f2a-436f-a0f8-35422213dd34`
+            echo $token
             curl -X POST --header "Authorization: $token 'https://maelzaye-func.azurewebsites.net/'
 
      
